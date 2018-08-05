@@ -1,20 +1,7 @@
 import React from 'react';
-import parseDomain from 'parse-domain';
-import _ from 'lodash';
-import timeago from 'timeago.js';
+import PropTypes from 'prop-types';
 
-const extractDomain = url => {
-  if (url) {
-    const { subdomain, domain, tld } = parseDomain(url);
-    return _.chain([subdomain, domain, tld])
-      .compact()
-      .join('.')
-      .value();
-  } else {
-    return null;
-  }
-};
-const Story = ({ story }) => {
+const Story = ({ story, extractDomain, timeago }) => {
   return (
     <section className="post">
       <div className="container">
@@ -23,7 +10,9 @@ const Story = ({ story }) => {
         <div className="info-container">
           {story.url ? (
             <div className="link-container">
-              <a className="link">{extractDomain(story.url)}</a>
+              <a href={story.url} className="link">
+                {extractDomain(story.url)}
+              </a>
             </div>
           ) : (
             false
@@ -38,6 +27,24 @@ const Story = ({ story }) => {
       </div>
     </section>
   );
+};
+
+Story.propTypes = {
+  story: PropTypes.exact({
+    id: PropTypes.number,
+    key: PropTypes.number,
+    kids: PropTypes.arrayOf(PropTypes.number),
+    type: PropTypes.string,
+    title: PropTypes.string,
+    text: PropTypes.string,
+    url: PropTypes.string,
+    score: PropTypes.number,
+    time: PropTypes.number,
+    by: PropTypes.string,
+    descendants: PropTypes.number,
+    extractDomain: PropTypes.func,
+    timeago: PropTypes.func
+  })
 };
 
 export default Story;

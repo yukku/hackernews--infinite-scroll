@@ -53,12 +53,10 @@ export function averageStoryOccurrenceRatio({
   const getRatio = ids => {
     const newest = ids[0];
     const oldest = ids[ids.length - 1];
-    return ids.length / (newest - oldest);
+    return ids.length / (newest + 1 - oldest);
   };
 
   return (state = 0, action) => {
-    const ids = mapActionToKey(action);
-
     switch (action.type) {
       case initialFetchSuccessType:
         return getRatio(mapActionToKey(action));
@@ -66,7 +64,7 @@ export function averageStoryOccurrenceRatio({
         // Calculate Weighted moving average
         // average = average + (value - average) / FACTOR
         // https://stackoverflow.com/questions/12636613/how-to-calculate-moving-average-without-keeping-the-count-and-data-total
-        return state + (getRatio(ids) - state) / 5;
+        return state + (getRatio(mapActionToKey(action)) - state) / 5;
       default:
         return state;
     }

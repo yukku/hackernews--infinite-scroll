@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { loadMostRecent, loadMoreStories } from '../actions';
-import Story from '../components/Story';
+import Stories from '../components/Stories';
+import LoadingSpinner from '../components/LoadingSpinner';
+import Story from '../containers/Story';
 
-class Stories extends React.Component {
+class StoriesContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -51,7 +53,7 @@ class Stories extends React.Component {
 
   render() {
     return (
-      <article className="news-list">
+      <Stories>
         {this.props.stories.map(story => {
           if (story.id) {
             return <Story key={story.id} story={story} />;
@@ -59,9 +61,8 @@ class Stories extends React.Component {
             return false;
           }
         })}
-
-        {this.props.isLoading ? <div className="loading-spinner" /> : false}
-      </article>
+        {this.props.isLoading ? <LoadingSpinner /> : false}
+      </Stories>
     );
   }
 }
@@ -73,4 +74,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Stories);
+export default connect(mapStateToProps)(StoriesContainer);

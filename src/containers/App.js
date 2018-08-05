@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-import Stories from './../containers/Stories';
+import React from 'react';
+import App from '../components/App';
+import Stories from './Stories';
 
-class App extends Component {
+class AppContainer extends React.Component {
   render() {
     return (
-      <main>
+      <App>
         <Stories />
-      </main>
+      </App>
     );
   }
 }
 
-export default App;
+export default AppContainer;

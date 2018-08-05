@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
-import logger from 'redux-logger';
+import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import sagas from './sagas';
 import reducer from './reducers';
 import { Provider } from 'react-redux';
+// import logger from 'redux-logger';
 
 import registerServiceWorker from './registerServiceWorker';
 import App from './containers/App';
@@ -17,7 +17,7 @@ const initialState = {};
 const store = createStore(
   reducer,
   initialState,
-  compose(applyMiddleware(sagaMiddleware, logger))
+  compose(applyMiddleware(sagaMiddleware))
 );
 
 sagaMiddleware.run(sagas);
