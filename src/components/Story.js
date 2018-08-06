@@ -19,9 +19,14 @@ const Story = ({ story, extractDomain, timeago }) => {
           )}
           <div className="details-container">
             <span className="time">{timeago().format(story.time * 1000)}</span>
-            <span className="score">{story.score} points</span>{' '}
+            <span className="score">
+              {story.score} {story.score > 1 ? 'points' : 'point'}
+            </span>{' '}
             <span className="author">by {story.by}</span>
-            <span className="descendants">{story.descendants} comments</span>
+            <span className="descendants">
+              {story.descendants}{' '}
+              {story.descendants > 1 ? 'comments' : 'comment'}
+            </span>
           </div>
         </div>
       </div>
