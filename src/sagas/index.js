@@ -1,4 +1,6 @@
+/* @flow */
 import _ from 'lodash';
+import type { Saga } from 'redux-saga';
 import {
   takeLatest,
   take,
@@ -13,19 +15,19 @@ import api from '../services';
 
 const TARGET_NUMBER_OF_POSTS_ON_UPDATE = 50;
 
-export const getStoryIds = state => state.storyIds;
-export const getStories = state => state.stories;
-export const getAverageStoryOccurrenceRatio = state =>
+export const getStoryIds = (state: any) => state.storyIds;
+export const getStories = (state: any) => state.stories;
+export const getAverageStoryOccurrenceRatio = (state: any) =>
   state.averageStoryOccurrenceRatio;
 
-export function* fetchItemsByIds(storyIds: Array<string>): Iterable {
+export function* fetchItemsByIds(storyIds: Array<string>): Saga<void> {
   const stories = yield all(
     storyIds.map(id => call(api.fetch, `/item/${id}`, {}))
   );
   yield put(actions.storiesFetched(stories));
 }
 
-export function* fetchStoriesFromLastStoryId(lastStoryId: number): Iterable {
+export function* fetchStoriesFromLastStoryId(lastStoryId: number): Saga<void> {
   const averageStoryOccurrenceRatio = yield select(
     getAverageStoryOccurrenceRatio
   );
@@ -45,7 +47,7 @@ export function* fetchStoriesFromLastStoryId(lastStoryId: number): Iterable {
   yield put(actions.storiesFetched(stories));
 }
 
-export function* fetchNewStoryIds(): Iterable {
+export function* fetchNewStoryIds(): Saga<void> {
   try {
     const ids = yield call(api.fetch, '/newstories', {});
     yield put(actions.newStoriesIdFetched(ids));
@@ -54,7 +56,7 @@ export function* fetchNewStoryIds(): Iterable {
   }
 }
 
-export function* getMoreStories(): Iterable {
+export function* getMoreStories(): Saga<void> {
   try {
     const storyIds = yield select(getStoryIds);
     const storedStories = yield select(getStories);
@@ -82,22 +84,22 @@ export function* getMoreStories(): Iterable {
   }
 }
 
-export function* watchLoadMostRecent(): Iterable {
+export function* watchLoadMostRecent(): Saga<void> {
   yield takeLatest(actions.LOAD_MOST_RECENT, fetchNewStoryIds);
 }
 
-export function* watchFetchNewStoryIds(): Iterable {
+export function* watchFetchNewStoryIds(): Saga<void> {
   yield takeLatest(actions.NEWSTORIES_ID_FETCH_SUCCEEDED, getMoreStories);
 }
 
-export function* watchLoadMoreStories(): Iterable {
+export function* watchLoadMoreStories(): Saga<void> {
   while (true) {
     yield take(actions.LOAD_MORE_STORIES);
     yield call(getMoreStories);
   }
 }
 
-export default function* root(): Iterable {
+export default function* root(): Saga<void> {
   yield all([
     fork(watchLoadMostRecent),
     fork(watchFetchNewStoryIds),
