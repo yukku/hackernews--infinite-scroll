@@ -8,7 +8,7 @@ Initially, the app calls `/v0/newstories` endpoint to get the latest 500 story I
 
 The problem is sequentially calling `v0/item/${id}` and determining whether the type of the item is a story or not can be slow due to network latency. Instead, the app makes concurrent calls to `v0/item/${id}` by estimating how many requests are needed to get set number of stories beforehand. For example, if items we received are as following `[Story, Comment, Story, Comment, Comment]`, the ratio of Story is 40%. So we could presume that in order to get 40 stories, it would need to make more or less 100 requests. 
 
-In order to adjust the ratio with newly fetched items, the app uses [Weighted Moving Average](https://en.wikipedia.org/wiki/Moving_average) to smooth out the variance over time.
+In order to adjust the ratio with newly fetched items, the app uses [Exponential Moving Average](https://en.wikipedia.org/wiki/Moving_average) to smooth out the variance over time.
 
 ### Install
 ```

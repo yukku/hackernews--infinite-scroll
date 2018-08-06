@@ -71,7 +71,7 @@ export function averageStoryOccurrenceRatio({
       case initialFetchSuccessType:
         return getRatio(mapActionToKey(action));
       case fetchSuccessType:
-        // Calculate Weighted moving average
+        // Calculate Exponential moving average
         // average = average + (value - average) / FACTOR
         // https://stackoverflow.com/questions/12636613/how-to-calculate-moving-average-without-keeping-the-count-and-data-total
         return state + (getRatio(mapActionToKey(action)) - state) / 5;
