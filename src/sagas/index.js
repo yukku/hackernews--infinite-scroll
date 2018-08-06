@@ -25,7 +25,7 @@ export function* fetchItemsByIds(storyIds: Array<string>): Iterable {
   yield put(actions.storiesFetched(stories));
 }
 
-export function* fetchStories(lastStoryId: number): Iterable {
+export function* fetchStoriesFromLastStoryId(lastStoryId: number): Iterable {
   const averageStoryOccurrenceRatio = yield select(
     getAverageStoryOccurrenceRatio
   );
@@ -73,7 +73,7 @@ export function* getMoreStories(): Iterable {
       const lastStoryId = storyIds[storyIds.length - 1] - 1;
 
       yield put(actions.storiesLoadingStart());
-      yield call(fetchStories, lastStoryId);
+      yield call(fetchStoriesFromLastStoryId, lastStoryId);
       yield put(actions.storiesLoadingEnd());
     }
   } catch (e) {

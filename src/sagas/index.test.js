@@ -3,7 +3,7 @@ import {
   getStories,
   getAverageStoryOccurrenceRatio,
   fetchItemsByIds,
-  fetchStories,
+  fetchStoriesFromLastStoryId,
   fetchNewStoryIds,
   getMoreStories
 } from './index';
@@ -51,9 +51,9 @@ describe('fetchItemsByIds saga test', () => {
   });
 });
 
-describe('fetchStories saga test', () => {
+describe('fetchStoriesFromLastStoryId saga test', () => {
   const mockLastStoryId = 12;
-  const generator = fetchStories(mockLastStoryId);
+  const generator = fetchStoriesFromLastStoryId(mockLastStoryId);
   const mockStories = [
     {
       type: 'story',
@@ -232,8 +232,10 @@ describe('getMoreStories saga test', () => {
     );
   });
 
-  it('should call fetchStories', () => {
-    expect(generator3.next().value).toEqual(call(fetchStories, 129));
+  it('should call fetchStoriesFromLastStoryId', () => {
+    expect(generator3.next().value).toEqual(
+      call(fetchStoriesFromLastStoryId, 129)
+    );
   });
 
   it('should call actions.storiesLoadingEnd()', () => {
