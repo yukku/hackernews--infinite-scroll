@@ -4,6 +4,7 @@ import { loadMostRecent, loadMoreStories } from '../actions';
 import Stories from '../components/Stories';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Story from '../containers/Story';
+import ErrorMessage from '../components/ErrorMessage';
 
 class StoriesContainer extends React.Component {
   constructor(props) {
@@ -52,25 +53,30 @@ class StoriesContainer extends React.Component {
   }
 
   render() {
-    return (
-      <Stories>
-        {this.props.stories.map(story => {
-          if (story.id && !story.dead && !story.deleted) {
-            return <Story key={story.id} story={story} />;
-          } else {
-            return false;
-          }
-        })}
-        {this.props.isLoading ? <LoadingSpinner /> : false}
-      </Stories>
-    );
+    if (!this.props.errors.error) {
+      return (
+        <Stories>
+          {this.props.stories.map(story => {
+            if (story.id && !story.dead && !story.deleted) {
+              return <Story key={story.id} story={story} />;
+            } else {
+              return false;
+            }
+          })}
+          {this.props.isLoading ? <LoadingSpinner /> : false}
+        </Stories>
+      );
+    } else {
+      return <ErrorMessage message={this.props.errors.message} />;
+    }
   }
 }
 
 const mapStateToProps = state => {
   return {
     stories: state.stories,
-    isLoading: state.isLoading
+    isLoading: state.isLoading,
+    errors: state.errors
   };
 };
 

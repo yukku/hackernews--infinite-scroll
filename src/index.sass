@@ -5,53 +5,62 @@ $blue: hsl(181, 80%, 40%);
 @import 'bulma/bulma'
 
 body
-    line-height: 1.4
-    @extend .has-text-weight-semibold
+  line-height: 1.4
+  @extend .has-text-weight-semibold
 
 h2
-    @extend .is-size-5
-    @extend .is-size-5-mobile
-    @extend .is-size-5-tablet
-    @extend .is-size-4-desktop
-    @extend .has-text-weight-semibold
+  @extend .is-size-5
+  @extend .is-size-5-mobile
+  @extend .is-size-5-tablet
+  @extend .is-size-4-desktop
+  @extend .has-text-weight-semibold
 
 .news-list
-    .post
-        @extend .section
-        padding: $section-padding
-        +tablet
-            padding: $section-padding-medium
-        border-bottom: 1px solid #eee
-        .container
-            h2
-                margin-bottom: 1rem
-            .info-container
-                div:not(:last-child)
-                    margin-bottom: 0.7rem
+  .post
+    @extend .section
+    padding: $section-padding
+    +tablet
+       padding: $section-padding-medium
+    border-bottom: 1px solid #eee
+    .container
+      h2
+        margin-bottom: 1rem
+      .info-container
+        div:not(:last-child)
+          margin-bottom: 0.7rem
 
-                .details-container
-                    @extend .is-size-7
-                    .score
-                        // padding-right: 1rem
-                    .author
-                        padding-right: 1rem
-                    .time
-                        padding-right: 1rem
-                    .descendants
-                        padding-right: 1rem
-                .link-container
-                    .link
-                        @extend .button
-                        @extend .is-link
-                        @extend .is-outlined
-                        @extend .is-small
-    .loading-spinner
-        margin: 1rem 0;
-        @extend .is-size-4
-        @extend .button
-        @extend .is-large
-        @extend .is-white
-        @extend .is-loading
-        @extend .is-fullwidth
-        @extend .has-text-grey-light
+        .details-container
+          @extend .is-size-7
+          .score
+              // padding-right: 1rem
+          .author
+            padding-right: 1rem
+          .time
+            padding-right: 1rem
+          .descendants
+            padding-right: 1rem
+        .link-container
+          .link
+            @extend .button
+            @extend .is-link
+            @extend .is-outlined
+            @extend .is-small
+  .loading-spinner
+    margin: 1rem 0;
+    @extend .is-size-4
+    @extend .button
+    @extend .is-large
+    @extend .is-white
+    @extend .is-loading
+    @extend .is-fullwidth
+    @extend .has-text-grey-light
 
+.error-message
+	padding: $section-padding
+	+tablet
+	   padding: $section-padding-medium
+
+	.summary
+		@extend .is-size-4
+		margin-bottom: 1rem
+	.error

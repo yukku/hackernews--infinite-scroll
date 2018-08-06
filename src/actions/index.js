@@ -45,7 +45,7 @@ export function newStoriesIdFetched(ids) {
 
 export function newStoriesIdFetchFaild(message) {
   return {
-    type: NEWSTORIES_ID_FETCH_SUCCEEDED,
+    type: NEWSTORIES_ID_FETCH_FAILED,
     message: message
   };
 }
@@ -68,8 +68,9 @@ export function storiesLoadingEnd() {
   };
 }
 
-export function storiesFetchFailed() {
+export function storiesFetchFailed(message) {
   return {
-    type: STORIES_FETCH_FAILED
+    type: STORIES_FETCH_FAILED,
+    message: message
   };
 }

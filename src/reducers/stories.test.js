@@ -2,7 +2,8 @@ import {
   storyIds,
   stories,
   averageStoryOccurrenceRatio,
-  isLoading
+  isLoading,
+  errors
 } from './stories.js';
 
 describe('storyIds reducer', () => {
@@ -164,5 +165,46 @@ describe('isLoading reducer', () => {
         type: 'endType'
       })
     ).toEqual(false);
+  });
+});
+
+describe('errors reducer', () => {
+  let errorsReducer;
+  beforeEach(() => {
+    errorsReducer = errors({
+      types: {
+        pageLoadErrorType: 'pageLoadErrorType',
+        storiesLoadErrorType: 'storiesLoadErrorType'
+      },
+      mapActionToKey: action => action.message
+    });
+  });
+
+  it('should return the initial state', () => {
+    expect(errorsReducer(undefined, {})).toEqual({ error: false, message: '' });
+  });
+
+  it('should handle pageLoadErrorType', () => {
+    expect(
+      errorsReducer(
+        {},
+        {
+          type: 'pageLoadErrorType',
+          message: 'error occurred'
+        }
+      )
+    ).toEqual({ error: true, message: 'error occurred' });
+  });
+
+  it('should handle storiesLoadErrorType', () => {
+    expect(
+      errorsReducer(
+        {},
+        {
+          type: 'storiesLoadErrorType',
+          message: 'error occurred'
+        }
+      )
+    ).toEqual({ error: true, message: 'error occurred' });
   });
 });

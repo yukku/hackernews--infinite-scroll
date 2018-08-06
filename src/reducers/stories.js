@@ -88,3 +88,31 @@ export function isLoading({
     }
   };
 }
+
+export function errors({
+  types,
+  mapActionToKey
+}: {
+  types: { pageLoadErrorType: string, storiesLoadErrorType: string },
+  mapActionToKey: MapActionToKey
+}) {
+  const { pageLoadErrorType, storiesLoadErrorType } = types;
+
+  const initState = {
+    error: false,
+    message: ''
+  };
+
+  return (state = initState, action) => {
+    switch (action.type) {
+      case pageLoadErrorType:
+      case storiesLoadErrorType:
+        return {
+          error: true,
+          message: mapActionToKey(action)
+        };
+      default:
+        return initState;
+    }
+  };
+}

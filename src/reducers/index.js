@@ -3,7 +3,8 @@ import {
   stories,
   storyIds,
   averageStoryOccurrenceRatio,
-  isLoading
+  isLoading,
+  errors
 } from './stories.js';
 import * as actions from '../actions';
 
@@ -33,6 +34,13 @@ const rootReducer = combineReducers({
       startType: actions.STORIES_LOADING_START,
       endType: actions.STORIES_LOADING_END
     }
+  }),
+  errors: errors({
+    types: {
+      pageLoadErrorType: actions.NEWSTORIES_ID_FETCH_FAILED,
+      storiesLoadErrorType: actions.STORIES_FETCH_FAILED
+    },
+    mapActionToKey: action => action.message
   })
 });
 
