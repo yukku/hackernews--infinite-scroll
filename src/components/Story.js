@@ -30,7 +30,7 @@ const Story = ({ story, extractDomain, timeago }) => {
 };
 
 Story.propTypes = {
-  story: PropTypes.exact({
+  story: PropTypes.shape({
     id: PropTypes.number,
     key: PropTypes.number,
     kids: PropTypes.arrayOf(PropTypes.number),
@@ -43,7 +43,9 @@ Story.propTypes = {
     by: PropTypes.string,
     descendants: PropTypes.number,
     extractDomain: PropTypes.func,
-    timeago: PropTypes.func
+    timeago: PropTypes.func,
+    dead: PropTypes.bool,
+    deleted: PropTypes.bool
   })
 };
 

@@ -1,21 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import parseDomain from 'parse-domain';
-import _ from 'lodash';
+import extractDomain from 'extract-domain';
 import timeago from 'timeago.js';
 import Story from '../components/Story';
 
 class StoryContainer extends React.Component {
   extractDomain(url) {
-    if (url) {
-      const { subdomain, domain, tld } = parseDomain(url);
-      return _.chain([subdomain, domain, tld])
-        .compact()
-        .join('.')
-        .value();
-    } else {
-      return false;
-    }
+    return extractDomain(url);
   }
 
   render() {

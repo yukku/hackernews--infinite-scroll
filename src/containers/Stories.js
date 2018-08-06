@@ -55,7 +55,7 @@ class StoriesContainer extends React.Component {
     return (
       <Stories>
         {this.props.stories.map(story => {
-          if (story.id) {
+          if (story.id && !story.dead && !story.deleted) {
             return <Story key={story.id} story={story} />;
           } else {
             return false;
