@@ -1,15 +1,7 @@
 /* @flow */
 import _ from 'lodash';
 import type { Saga } from 'redux-saga';
-import {
-  takeLatest,
-  take,
-  put,
-  call,
-  fork,
-  select,
-  all
-} from 'redux-saga/effects';
+import { takeLatest, take, put, call, fork, select, all } from 'redux-saga/effects';
 import * as actions from '../actions';
 import api from '../services';
 
@@ -17,24 +9,18 @@ const TARGET_NUMBER_OF_POSTS_ON_UPDATE = 50;
 
 export const getStoryIds = (state: any) => state.storyIds;
 export const getStories = (state: any) => state.stories;
-export const getAverageStoryOccurrenceRatio = (state: any) =>
-  state.averageStoryOccurrenceRatio;
+export const getAverageStoryOccurrenceRatio = (state: any) => state.averageStoryOccurrenceRatio;
 
 export function* fetchItemsByIds(storyIds: Array<string>): Saga<void> {
-  const stories = yield all(
-    storyIds.map(id => call(api.fetch, `/item/${id}`, {}))
-  );
+  const stories = yield all(storyIds.map(id => call(api.fetch, `/item/${id}`, {})));
   yield put(actions.storiesFetched(stories));
 }
 
 export function* fetchStoriesFromLastStoryId(lastStoryId: number): Saga<void> {
-  const averageStoryOccurrenceRatio = yield select(
-    getAverageStoryOccurrenceRatio
-  );
+  const averageStoryOccurrenceRatio = yield select(getAverageStoryOccurrenceRatio);
 
   let rangeTo =
-    lastStoryId -
-    Math.abs(TARGET_NUMBER_OF_POSTS_ON_UPDATE / averageStoryOccurrenceRatio);
+    lastStoryId - Math.abs(TARGET_NUMBER_OF_POSTS_ON_UPDATE / averageStoryOccurrenceRatio);
   if (rangeTo < 0) {
     rangeTo = 0;
   }
@@ -72,10 +58,8 @@ export function* getMoreStories(): Saga<void> {
       yield call(fetchItemsByIds, storyIds.slice(rangeFrom, rangeTo));
       yield put(actions.storiesLoadingEnd());
     } else {
-      const lastStoryId = storyIds[storyIds.length - 1] - 1;
-
       yield put(actions.storiesLoadingStart());
-      yield call(fetchStoriesFromLastStoryId, lastStoryId);
+      yield call(fetchStoriesFromLastStoryId, lastStory.id - 1);
       yield put(actions.storiesLoadingEnd());
     }
   } catch (e) {
@@ -100,9 +84,5 @@ export function* watchLoadMoreStories(): Saga<void> {
 }
 
 export default function* root(): Saga<void> {
-  yield all([
-    fork(watchLoadMostRecent),
-    fork(watchFetchNewStoryIds),
-    fork(watchLoadMoreStories)
-  ]);
+  yield all([fork(watchLoadMostRecent), fork(watchFetchNewStoryIds), fork(watchLoadMoreStories)]);
 }

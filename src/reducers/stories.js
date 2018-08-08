@@ -1,6 +1,4 @@
 /* @flow */
-type MapActionToKeyType = (action: any) => any;
-type ActionType = { type: string };
 type StoryType = { id: number };
 type ErrorType = {
   error: boolean,
@@ -12,11 +10,14 @@ export function storyIds({
   mapActionToKey
 }: {
   types: { initialFetchSuccessType: string, fetchSuccessType: string },
-  mapActionToKey: MapActionToKeyType
+  mapActionToKey: (action: { ids: Array<number> }) => Array<number>
 }) {
   const { initialFetchSuccessType, fetchSuccessType } = types;
 
-  return (state: Array<number> = [], action: ActionType): Array<number> => {
+  return (
+    state: Array<number> = [],
+    action: { type: string, ids: Array<number> }
+  ): Array<number> => {
     const ids = mapActionToKey(action);
     switch (action.type) {
       case initialFetchSuccessType:
@@ -33,13 +34,13 @@ export function stories({
   mapActionToKey
 }: {
   types: { fetchSuccessType: string },
-  mapActionToKey: MapActionToKeyType
+  mapActionToKey: (action: { stories: Array<StoryType> }) => Array<StoryType>
 }) {
   const { fetchSuccessType } = types;
 
   return (
     state: Array<StoryType> = [],
-    action: ActionType
+    action: { type: string, stories: Array<StoryType> }
   ): Array<StoryType> => {
     const stories = mapActionToKey(action);
     switch (action.type) {
@@ -56,7 +57,7 @@ export function averageStoryOccurrenceRatio({
   mapActionToKey
 }: {
   types: { initialFetchSuccessType: string, fetchSuccessType: string },
-  mapActionToKey: MapActionToKeyType
+  mapActionToKey: (action: { ids: Array<number> }) => Array<number>
 }) {
   const { initialFetchSuccessType, fetchSuccessType } = types;
 
@@ -66,7 +67,7 @@ export function averageStoryOccurrenceRatio({
     return ids.length / (newest + 1 - oldest);
   };
 
-  return (state: number = 0, action: ActionType): number => {
+  return (state: number = 0, action: { type: string, ids: Array<number> }): number => {
     switch (action.type) {
       case initialFetchSuccessType:
         return getRatio(mapActionToKey(action));
@@ -81,13 +82,9 @@ export function averageStoryOccurrenceRatio({
   };
 }
 
-export function isLoading({
-  types
-}: {
-  types: { startType: string, endType: string }
-}) {
+export function isLoading({ types }: { types: { startType: string, endType: string } }) {
   const { startType, endType } = types;
-  return (state: boolean = false, action: ActionType): boolean => {
+  return (state: boolean = false, action: { type: string }): boolean => {
     switch (action.type) {
       case startType:
         return true;
@@ -104,7 +101,7 @@ export function errors({
   mapActionToKey
 }: {
   types: { pageLoadErrorType: string, storiesLoadErrorType: string },
-  mapActionToKey: MapActionToKeyType
+  mapActionToKey: (action: { message: string }) => string
 }) {
   const { pageLoadErrorType, storiesLoadErrorType } = types;
 
@@ -113,7 +110,7 @@ export function errors({
     message: ''
   };
 
-  return (state: ErrorType = initState, action: ActionType): ErrorType => {
+  return (state: ErrorType = initState, action: { type: string, message: string }): ErrorType => {
     switch (action.type) {
       case pageLoadErrorType:
       case storiesLoadErrorType:
