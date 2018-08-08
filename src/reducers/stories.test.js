@@ -1,10 +1,4 @@
-import {
-  storyIds,
-  stories,
-  averageStoryOccurrenceRatio,
-  isLoading,
-  errors
-} from './stories.js';
+import { storyIds, stories, averageStoryOccurrenceRatio, isLoading, errors } from './stories.js';
 
 describe('storyIds reducer', () => {
   let storyIdsReducer;
@@ -86,7 +80,7 @@ describe('averageStoryOccurrenceRatio reducer', () => {
   });
 
   it('should return the initial state', () => {
-    expect(averageStoryOccurrenceRatioReducer(undefined, {})).toEqual(0);
+    expect(averageStoryOccurrenceRatioReducer(undefined, {})).toEqual(1);
   });
 
   it('should handle initialFetchSuccessType', () => {

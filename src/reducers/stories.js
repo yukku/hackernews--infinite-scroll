@@ -67,7 +67,7 @@ export function averageStoryOccurrenceRatio({
     return ids.length / (newest + 1 - oldest);
   };
 
-  return (state: number = 0, action: { type: string, ids: Array<number> }): number => {
+  return (state: number = 1, action: { type: string, ids: Array<number> }): number => {
     switch (action.type) {
       case initialFetchSuccessType:
         return getRatio(mapActionToKey(action));
