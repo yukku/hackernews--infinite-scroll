@@ -122,7 +122,7 @@ class VarianceMonitor extends React.Component {
       this.props.averageStoryOccurrenceRatio -
       this.timeSerisChart.getInitialAverageStoryOccurrenceRatio();
 
-    this.timeSerisChart.update(updatedStoriesLength - 50, averageStoryOccurrenceRatioDiff * 100);
+    this.timeSerisChart.update(updatedStoriesLength - 50, averageStoryOccurrenceRatioDiff * 200);
   }
 
   render() {

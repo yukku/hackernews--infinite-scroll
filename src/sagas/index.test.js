@@ -3,21 +3,13 @@ import {
   getStories,
   getAverageStoryOccurrenceRatio,
   fetchItemsByIds,
-  fetchStoriesFromLastStoryId,
+  fetchStoriesByWalkingBackwardFromId,
   fetchNewStoryIds,
   getMoreStories
 } from './index';
 import * as actions from '../actions';
 import api from '../services';
-import {
-  takeLatest,
-  take,
-  put,
-  call,
-  fork,
-  select,
-  all
-} from 'redux-saga/effects';
+import { takeLatest, take, put, call, fork, select, all } from 'redux-saga/effects';
 import { cloneableGenerator } from 'redux-saga/utils';
 
 describe('fetchItemsByIds saga test', () => {
@@ -41,9 +33,7 @@ describe('fetchItemsByIds saga test', () => {
   });
 
   it('should yield actions.storiesFetched(mockStories)', () => {
-    expect(generator.next(mockStories).value).toEqual(
-      put(actions.storiesFetched(mockStories))
-    );
+    expect(generator.next(mockStories).value).toEqual(put(actions.storiesFetched(mockStories)));
   });
 
   it('it should be done', () => {
@@ -51,9 +41,9 @@ describe('fetchItemsByIds saga test', () => {
   });
 });
 
-describe('fetchStoriesFromLastStoryId saga test', () => {
+describe('fetchStoriesByWalkingBackwardFromId saga test', () => {
   const mockLastStoryId = 12;
-  const generator = fetchStoriesFromLastStoryId(mockLastStoryId);
+  const generator = fetchStoriesByWalkingBackwardFromId(mockLastStoryId);
   const mockStories = [
     {
       type: 'story',
@@ -68,9 +58,7 @@ describe('fetchStoriesFromLastStoryId saga test', () => {
   ];
 
   it('should select getAverageStoryOccurrenceRatio', () => {
-    expect(generator.next().value).toEqual(
-      select(getAverageStoryOccurrenceRatio)
-    );
+    expect(generator.next().value).toEqual(select(getAverageStoryOccurrenceRatio));
   });
 
   it('should call api.fetch using all ids from calculated range', () => {
@@ -81,9 +69,7 @@ describe('fetchStoriesFromLastStoryId saga test', () => {
   });
 
   it('should yield actions.storiesFetched(mockStories)', () => {
-    expect(generator.next(mockStories).value).toEqual(
-      put(actions.storiesIdFetched([12]))
-    );
+    expect(generator.next(mockStories).value).toEqual(put(actions.storiesIdFetched([12])));
   });
 
   it('should yield actions.storiesFetched(mockStories)', () => {
@@ -114,9 +100,7 @@ describe('fetchNewStoryIds saga test', () => {
   });
 
   it('should yield actions.newStoriesIdFetched(ids)', () => {
-    expect(generator1.next([11]).value).toEqual(
-      put(actions.newStoriesIdFetched([11]))
-    );
+    expect(generator1.next([11]).value).toEqual(put(actions.newStoriesIdFetched([11])));
   });
 
   it('it should be done', () => {
@@ -165,9 +149,7 @@ describe('getMoreStories saga test', () => {
       }
     ];
 
-    expect(generator1.next(mockStories).value).toEqual(
-      put(actions.noMoreStoryToFetch())
-    );
+    expect(generator1.next(mockStories).value).toEqual(put(actions.noMoreStoryToFetch()));
   });
 
   it('it should be done', () => {
@@ -192,9 +174,7 @@ describe('getMoreStories saga test', () => {
     generator2.next();
     generator2.next([150, 130, 12]);
 
-    expect(generator2.next(mockStories).value).toEqual(
-      put(actions.storiesLoadingStart())
-    );
+    expect(generator2.next(mockStories).value).toEqual(put(actions.storiesLoadingStart()));
   });
 
   it('should call fetchItemsByIds', () => {
@@ -227,15 +207,11 @@ describe('getMoreStories saga test', () => {
     generator3.next();
     generator3.next([150, 130]);
 
-    expect(generator3.next(mockStories).value).toEqual(
-      put(actions.storiesLoadingStart())
-    );
+    expect(generator3.next(mockStories).value).toEqual(put(actions.storiesLoadingStart()));
   });
 
-  it('should call fetchStoriesFromLastStoryId', () => {
-    expect(generator3.next().value).toEqual(
-      call(fetchStoriesFromLastStoryId, 129)
-    );
+  it('should call fetchStoriesByWalkingBackwardFromId', () => {
+    expect(generator3.next().value).toEqual(call(fetchStoriesByWalkingBackwardFromId, 129));
   });
 
   it('should call actions.storiesLoadingEnd()', () => {

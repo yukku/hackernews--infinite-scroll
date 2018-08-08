@@ -16,15 +16,14 @@ export function* fetchItemsByIds(storyIds: Array<string>): Saga<void> {
   yield put(actions.storiesFetched(stories));
 }
 
-export function* fetchStoriesFromLastStoryId(lastStoryId: number): Saga<void> {
+export function* fetchStoriesByWalkingBackwardFromId(id: number): Saga<void> {
   const averageStoryOccurrenceRatio = yield select(getAverageStoryOccurrenceRatio);
 
-  let rangeTo =
-    lastStoryId - Math.abs(TARGET_NUMBER_OF_POSTS_ON_UPDATE / averageStoryOccurrenceRatio);
+  let rangeTo = id - Math.abs(TARGET_NUMBER_OF_POSTS_ON_UPDATE / averageStoryOccurrenceRatio);
   if (rangeTo < 0) {
     rangeTo = 0;
   }
-  const range = _.range(lastStoryId, rangeTo);
+  const range = _.range(id, rangeTo);
   const items = yield all(range.map(id => call(api.fetch, `/item/${id}`, {})));
 
   const stories = items.filter(item => item.type === 'story');
@@ -59,7 +58,7 @@ export function* getMoreStories(): Saga<void> {
       yield put(actions.storiesLoadingEnd());
     } else {
       yield put(actions.storiesLoadingStart());
-      yield call(fetchStoriesFromLastStoryId, lastStory.id - 1);
+      yield call(fetchStoriesByWalkingBackwardFromId, lastStory.id - 1);
       yield put(actions.storiesLoadingEnd());
     }
   } catch (e) {
